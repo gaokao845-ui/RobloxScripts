@@ -1,6 +1,5 @@
 --// LocalScript ใน StarterGui
 
--- GUI หลัก
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui")
 gui.Name = "AutoXGUI"
@@ -18,7 +17,7 @@ frame.Parent = gui
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -40, 0, 30)
 title.Position = UDim2.new(0, 10, 0, 5)
-title.Text = "ระบบกด X อัตโนมัติ (Turbo)"
+title.Text = "ระบบกด X อัตโนมัติ (รัวโคตร)"
 title.TextColor3 = Color3.new(1,1,1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
@@ -57,18 +56,18 @@ statusLabel.Parent = frame
 
 -- ตัวแปรสถานะ
 local running = false
+local vim = game:GetService("VirtualInputManager")
 
--- ฟังก์ชันกด X รัว (เร็วมาก)
+-- ฟังก์ชันกดรัวสุด
 task.spawn(function()
 	while true do
 		if running then
-			local vim = game:GetService("VirtualInputManager")
-			vim:SendKeyEvent(true, Enum.KeyCode.X, false, game)
-			task.wait(0.01) -- หน่วงนิดเดียว ปรับได้ (0.01 = 100 ครั้งต่อวินาที)
-			vim:SendKeyEvent(false, Enum.KeyCode.X, false, game)
-		else
-			task.wait(0.1)
+			for i = 1, 8 do -- ปรับจำนวนการกดซ้อน (8 ครั้งต่อเฟรม = เร็วมาก)
+				vim:SendKeyEvent(true, Enum.KeyCode.X, false, game)
+				vim:SendKeyEvent(false, Enum.KeyCode.X, false, game)
+			end
 		end
+		task.wait() -- หน่วง 1 เฟรม
 	end
 end)
 
