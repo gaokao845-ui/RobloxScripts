@@ -60,7 +60,7 @@ local running = false
 
 -- ฟังก์ชันกด X ซ้ำ
 task.spawn(function()
-	while task.wait(0.5) do
+	while task.wait(0.005) do
 		if running then
 			game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.X, false, game)
 			task.wait(0.05)
