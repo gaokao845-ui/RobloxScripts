@@ -1,6 +1,6 @@
 --// LocalScript ใน StarterGui
 
--- สร้าง GUI
+-- GUI หลัก
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui")
 gui.Name = "AutoXGUI"
@@ -18,7 +18,7 @@ frame.Parent = gui
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -40, 0, 30)
 title.Position = UDim2.new(0, 10, 0, 5)
-title.Text = "ระบบกด X อัตโนมัติ"
+title.Text = "ระบบกด X อัตโนมัติ (Turbo)"
 title.TextColor3 = Color3.new(1,1,1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
@@ -58,24 +58,27 @@ statusLabel.Parent = frame
 -- ตัวแปรสถานะ
 local running = false
 
--- ฟังก์ชันกด X ซ้ำ
+-- ฟังก์ชันกด X รัว (เร็วมาก)
 task.spawn(function()
-	while task.wait(0.005) do
+	while true do
 		if running then
-			game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.X, false, game)
-			task.wait(0.05)
-			game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.X, false, game)
+			local vim = game:GetService("VirtualInputManager")
+			vim:SendKeyEvent(true, Enum.KeyCode.X, false, game)
+			task.wait(0.01) -- หน่วงนิดเดียว ปรับได้ (0.01 = 100 ครั้งต่อวินาที)
+			vim:SendKeyEvent(false, Enum.KeyCode.X, false, game)
+		else
+			task.wait(0.1)
 		end
 	end
 end)
 
--- ปุ่มเปิดปิดระบบ
+-- ปุ่มเปิด/ปิดระบบ
 toggleButton.MouseButton1Click:Connect(function()
 	running = not running
 	if running then
 		toggleButton.Text = "ปิดระบบ"
 		toggleButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-		statusLabel.Text = "สถานะ: เปิดอยู่"
+		statusLabel.Text = "สถานะ: เปิดอยู่ (รัวสุดๆ)"
 	else
 		toggleButton.Text = "เปิดระบบ"
 		toggleButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
@@ -83,7 +86,7 @@ toggleButton.MouseButton1Click:Connect(function()
 	end
 end)
 
--- ปุ่มกากบาท ปิด GUI ถาวร
+-- ปุ่มปิด GUI ถาวร
 closeButton.MouseButton1Click:Connect(function()
 	gui:Destroy()
 end)
